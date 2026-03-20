@@ -18,6 +18,13 @@ def main():
     st.set_page_config(page_title="Zedech SME Lead Dashboard", layout="wide")
     st.title("Google Maps SME Leads - Malaysia")
 
+    # Debug: show DB path in sidebar expander (helpful for deployment)
+    from src.config.settings import settings
+    db_path = settings.database_url.replace("sqlite:///", "")
+    with st.sidebar.expander("Debug"):
+        st.text(f"DB: {db_path}")
+        st.text(f"Exists: {Path(db_path).exists()}")
+
     init_db()
     db = get_session()
 
