@@ -24,6 +24,14 @@ def main():
     with st.sidebar.expander("Debug"):
         st.text(f"DB: {db_path}")
         st.text(f"Exists: {Path(db_path).exists()}")
+        import os
+        st.text(f"Size: {os.path.getsize(db_path) if Path(db_path).exists() else 0} bytes")
+        # Check row count directly
+        import sqlite3
+        conn = sqlite3.connect(db_path)
+        count = conn.execute("SELECT COUNT(*) FROM businesses").fetchone()[0]
+        st.text(f"Rows: {count}")
+        conn.close()
 
     init_db()
     db = get_session()
