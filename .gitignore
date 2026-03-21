@@ -1,8 +1,7 @@
 # Environment
 .env
 
-# Database
-data/*.db
+# Database (WAL/SHM are temp files, main .db is tracked for deployment)
 data/*.db-wal
 data/*.db-shm
 

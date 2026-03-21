@@ -1,42 +1,75 @@
-"""Three layers of search terms for finding niche SMEs."""
+"""Search terms targeting established businesses with revenue but no proper website.
 
-LAYER_1_MALAY_ENGLISH: list[str] = [
-    "kedai", "workshop", "enterprise", "trading", "sdn bhd", "supplier",
-    "repair", "services", "bengkel", "perkhidmatan", "pembekal", "pembaikan",
-    "pembinaan", "paip", "elektrik", "jahit", "dobi", "cat", "bunga", "ukir",
-    "contractor", "fabrication", "installation", "maintenance", "hardware",
-    "spare parts", "printing", "signage", "cleaning", "pest control",
-    "catering", "courier", "wholesale", "distributor", "manufacturer",
+Target: B2B leads for Zedech AI automation & solutions.
+Profile: Businesses with real revenue that would benefit from a landing page,
+         AI automation, or digital presence. Not small walk-in shops.
+"""
+
+LAYER_1_HIGH_VALUE_SERVICES: list[str] = [
+    # Construction & building (high-ticket, project-based)
+    "contractor", "pembinaan", "renovation", "interior design",
+    "construction company", "building contractor",
+    # Registered businesses (revenue signal)
+    "sdn bhd", "enterprise",
+    # Trades that do quoting / project work
+    "fabrication", "installation", "maintenance company",
+    "pest control", "cleaning company",
+    # Digital-ready services
+    "aircond service", "electrical contractor", "plumber",
+    "landscaping", "security company", "fire safety",
 ]
 
-LAYER_2_CHINESE: list[str] = [
-    "公司", "行", "店", "五金", "工程", "建筑", "装修", "电器", "机械",
-    "汽车", "印刷", "冷气", "水管", "玻璃", "铁", "木", "漆", "布", "花", "食",
+LAYER_2_HOSPITALITY_PROPERTY: list[str] = [
+    # Airbnb / hospitality (high value, need booking pages)
+    "homestay", "airbnb", "resort", "chalet", "villa",
+    "guest house", "budget hotel",
+    # Property services
+    "property management", "real estate agent",
+    # Events (need inquiry/booking pages)
+    "event management", "event space", "wedding planner",
+    "catering company", "canopy rental",
 ]
 
-LAYER_3_TRADE_INDUSTRY: list[str] = [
-    # Manufacturing / industrial
-    "welding", "soldering", "machining", "stamping", "casting", "aluminium",
-    "stainless steel", "steel works", "rubber", "plastic", "packaging",
-    "powder coating", "chrome plating", "galvanizing", "wire harness",
-    "injection moulding",
-    # Building trades
-    "roofing", "ceiling", "tiling", "waterproofing", "flooring", "glazing",
-    "scaffolding", "renovation", "interior design", "kitchen cabinet",
-    "wardrobe", "gate grill", "awning",
-    # Automotive
-    "bodywork", "spray paint", "upholstery", "tint", "car wrapping",
-    "car accessories", "tyre", "rim", "exhaust",
-    # Niche services
-    "embroidery", "engraving", "laminating", "bookbinding", "foam",
-    "neon sign", "led sign", "banner printing", "timber", "carpet",
-    "curtain", "uniform", "trophy", "rubber stamp", "key cutting", "locksmith",
+LAYER_3_INDUSTRIAL_MANUFACTURING: list[str] = [
+    # Metal & fabrication (like the 70M aluminium gate business)
+    "aluminium", "stainless steel", "steel works", "gate grill",
+    "welding", "machining", "metal fabrication",
+    "powder coating", "galvanizing",
+    # Building materials & supply
+    "kitchen cabinet", "wardrobe", "awning", "roofing",
+    "ceiling", "tiling", "waterproofing", "flooring",
+    "glass supplier", "timber supplier",
+    # Automotive services (not retail)
+    "bodywork", "spray paint", "car wrapping", "car detailing",
+    "fleet management", "workshop",
+    # Packaging & manufacturing
+    "packaging", "manufacturer", "OEM", "printing company",
+]
+
+LAYER_4_PROFESSIONAL_NICHE: list[str] = [
+    # Health & wellness (appointment-driven, need online presence)
+    "clinic", "dental", "physiotherapy", "spa",
+    "traditional medicine", "wellness center",
+    # Education & training
+    "tuition centre", "training centre", "driving school",
+    # Professional services
+    "accounting firm", "audit firm", "consultant",
+    "engineering firm", "surveyor",
+    # Logistics & transport
+    "transport company", "logistics", "freight", "warehousing",
+    "cold storage", "movers",
+    # Niche high-value services
+    "signage company", "signboard", "led sign",
+    "embroidery", "uniform supplier", "trophy",
+    "curtain", "carpet supplier",
+    "CCTV", "alarm system", "automation",
 ]
 
 ALL_LAYERS: dict[str, list[str]] = {
-    "layer_1": LAYER_1_MALAY_ENGLISH,
-    "layer_2": LAYER_2_CHINESE,
-    "layer_3": LAYER_3_TRADE_INDUSTRY,
+    "layer_1": LAYER_1_HIGH_VALUE_SERVICES,
+    "layer_2": LAYER_2_HOSPITALITY_PROPERTY,
+    "layer_3": LAYER_3_INDUSTRIAL_MANUFACTURING,
+    "layer_4": LAYER_4_PROFESSIONAL_NICHE,
 }
 
 

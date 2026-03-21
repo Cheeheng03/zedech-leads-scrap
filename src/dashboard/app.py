@@ -16,7 +16,7 @@ from src.storage.exporter import query_leads
 
 def main():
     st.set_page_config(page_title="Zedech SME Lead Dashboard", layout="wide")
-    st.title("Google Maps SME Leads - Malaysia")
+    st.title("Potential SME Leads")
 
     # Debug: show DB path in sidebar expander (helpful for deployment)
     from src.config.settings import settings
@@ -42,6 +42,13 @@ def main():
     all_states = sorted([r[0] for r in db.query(Business.state).distinct().all() if r[0]])
     selected_states = st.sidebar.multiselect("States", all_states, default=all_states)
 
+    # City filter — dynamically based on selected states
+    city_query = db.query(Business.city).distinct()
+    if selected_states:
+        city_query = city_query.filter(Business.state.in_(selected_states))
+    all_cities = sorted([r[0] for r in city_query.all() if r[0]])
+    selected_cities = st.sidebar.multiselect("Cities", all_cities)
+
     all_sectors = sorted([r[0] for r in db.query(Business.sector_query).distinct().all() if r[0]])
     selected_sectors = st.sidebar.multiselect("Sectors (search terms)", all_sectors)
 
@@ -59,7 +66,7 @@ def main():
         "Contact Status", ["All", "Not Contacted", "Contacted"], index=1
     )
 
-    google_confirmed = st.sidebar.checkbox("Google-confirmed no site only", value=False)
+    has_phone = st.sidebar.radio("Has Phone", ["All", "Yes", "No"], index=0)
 
     # --- Sort options ---
     st.sidebar.header("Sort")
@@ -86,11 +93,16 @@ def main():
         sectors=selected_sectors if selected_sectors else None,
     )
 
+    if selected_cities:
+        df = df[df["City"].isin(selected_cities)]
+
     if selected_categories:
         df = df[df["Category"].isin(selected_categories)]
 
-    if google_confirmed:
-        df = df[df["Google Confirmed No Site"] == True]
+    if has_phone == "Yes":
+        df = df[df["Phone"].notna() & (df["Phone"] != "None") & (df["Phone"] != "")]
+    elif has_phone == "No":
+        df = df[df["Phone"].isna() | (df["Phone"] == "None") | (df["Phone"] == "")]
 
     # Apply sorting
     if len(df) > 0:
@@ -99,14 +111,10 @@ def main():
         df = df.reset_index(drop=True)
 
     # --- Stats row ---
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
     col1.metric("Total Leads", len(df))
     col2.metric("Avg Score", f"{df['Score'].mean():.1f}" if len(df) > 0 else "0")
     col3.metric("With Phone", len(df[df["Phone"].notna()]) if len(df) > 0 else 0)
-    col4.metric(
-        "Google Confirmed",
-        len(df[df["Google Confirmed No Site"] == True]) if len(df) > 0 else 0,
-    )
 
     st.divider()
 
@@ -131,7 +139,7 @@ def main():
             disabled=[
                 "Name", "Phone", "Address", "City", "State", "Category", "Sector",
                 "Website Status", "Rating", "Reviews", "Photos", "Score",
-                "Score Breakdown", "Google Confirmed No Site", "Google Maps URL",
+                "Score Breakdown", "Google Maps URL",
                 "Notes", "Scraped At",
             ],
             hide_index=True,
